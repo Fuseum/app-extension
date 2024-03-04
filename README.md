@@ -1,6 +1,6 @@
 # Extension Amazon Payment
 
-**Description:** Paylana - an innovative open-source browser extension developed by Esol Labs powered by Solana pay.
+**Description:** Paylana - an innovative open-source browser extension developed by Esol Labs Powered by SUI Solana pay.
 
 **Tech stack:** This is a [React](https://react.dev/) project bundled with [Vite ](https://vitejs.dev/) and [ICRXJS](https://crxjs.dev/vite-plugin)
 

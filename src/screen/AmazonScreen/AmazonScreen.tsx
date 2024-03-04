@@ -1,15 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { clusterApiUrl, Connection, PublicKey, Keypair } from '@solana/web3.js'
-import { encodeURL, createQR } from '@solana/pay'
 import BigNumber from 'bignumber.js'
-import { ValidatePayment } from '@src/utils/TransactionValidate/qrValidator'
 import { OriginExtract } from '@src/utils/lib'
 import DisStepHeader from './DisableStepHeader'
 import AmazonCardStep from '@src/components/AmazonCard/AmazonCardStep'
-//Img
-
+import QRCode from 'react-qr-code'
 import AmazonFooter from './AmazonFooter'
+
 export default function AmazonScreen() {
   const [searchParams] = useSearchParams()
   const senderInfo = JSON.parse(searchParams.get('senderInfo'))
@@ -29,60 +26,23 @@ export default function AmazonScreen() {
   let ref = useRef(null)
 
   useEffect(() => {
-    /* Establish a connection */
-    const connection = new Connection(clusterApiUrl('devnet'), 'confirmed')
-
-    /* Create a payment request link */
-    const payment_recipient = new PublicKey('E3z9bv1GbWMceWQ34Waxcgi3C6c9FQevYSbjPckY8Ccp') // <- Merchant address
-    const payment_amount = new BigNumber(0.001643) // <- Item price
-    const splToken = new PublicKey('4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU') // <- Token address
-    const payment_reference = new Keypair().publicKey // <- Reference(key) for tracking/validating transaction
-    const payment_label = 'Savita Gems'
-    const payment_message =
-      'Natural Picture Jasper Beads Stretchable Bracelet, Approx 4 MM Smooth Round Beads, Stretchable Jasper Bracelet, Adjustable'
-    const payment_memo = '#' + 'OrderID1945' // <- Transaction memo -> memo program
-
-    const url = encodeURL({
-      recipient: payment_recipient,
-      amount: payment_amount,
-      splToken: splToken,
-      reference: payment_reference,
-      label: payment_label,
-      message: payment_message,
-      memo: payment_memo,
-    })
-
-    /* Encode link into a QR code & Add the QR code to your payment page */
-    const qrCode = createQR(url, 191, '#140E24', '#FFF')
-    qrCode.append(ref.current)
-
     /* Check for payment status */
-    TrackPaymentProcess(payment_reference, connection, payment_recipient, payment_amount, splToken)
+    TrackPaymentProcess()
 
     console.log('document location: ', document.location)
   }, [])
 
-  const TrackPaymentProcess = async (
-    payment_reference,
-    connection,
-    payment_recipient,
-    payment_amount,
-    splToken
-  ) => {
+  const TrackPaymentProcess = async () => {
     try {
-      const paymentStatus = await ValidatePayment(
-        payment_reference,
-        connection,
-        payment_recipient,
-        payment_amount,
-        splToken
-      )
+      let paymentStatus = 0
       console.log('payment Status: ', paymentStatus)
 
       /* if payment is validated -> simulate step 2 */
       changeStepStatus(setStepLoading, 1, false)
 
-      await simulateStep2()
+      setTimeout(async () => {
+        await simulateStep2()
+      }, 10000)
     } catch (error) {
       console.log('payment error: ', error)
     }
@@ -106,8 +66,8 @@ export default function AmazonScreen() {
 
       setTimeout(() => {
         simulateStep3()
-      }, 2000)
-    }, 3000)
+      }, 4000)
+    }, 4000)
   }
 
   const simulateStep3 = async () => {
@@ -128,7 +88,7 @@ export default function AmazonScreen() {
           changeStepStatus(setStepStatus, 3, true)
           setTimeout(() => {
             simulateStep4()
-          }, 2000)
+          }, 4000)
         }
       }
     )
@@ -148,16 +108,16 @@ export default function AmazonScreen() {
           setTimeout(() => {
             changeStepStatus(setStepLoading, 4, false)
             changeStepStatus(setStepStatus, 4, true)
-          }, 2000)
+          }, 4000)
         }
       }
     )
   }
 
   return (
-    <div className="overflow-hidden h-[520px] w-[320px] bg-[url('../../assets/images/Amazon/bg.png')] bg-cover bg-no-repeat pr-[12px] pl-[8px] pt-[24px] text-[#FFF] flex flex-col  justify-start items-center font-monasans m-0 ">
+    <div className="overflow-hidden h-[520px] w-[320px] bg-[#060B1B] bg-cover bg-no-repeat  text-[#FFF] flex flex-col  justify-start items-center font-monasans m-0">
       {/* step 1 */}
-      <div className="h-[400px] no-scrollbar overflow-x-hidden overflow-y-scroll flex flex-col items-center justify-between w-full gap-4 ">
+      <div className="h-[400px] no-scrollbar overflow-x-hidden overflow-y-scroll flex flex-col items-center justify-between w-full gap-4 relative z-10 pr-[12px] pl-[8px] pt-[24px]">
         {step === 1 ? (
           <>
             <AmazonCardStep
@@ -249,14 +209,18 @@ export default function AmazonScreen() {
         {/* <div className="ml-3 h-4 border-l border-[#bdbdbd]"></div> */}
         {!stepLoading[3] && (
           <div className="w-full flex flex-col items-center text-center gap-[10px]">
-            <div className="text-[#36F181] text-[20px] font-[700]">
+            <div className="text-[#FFFFFF] text-[16px] leading-[16px] font-medium">
               Thanks for using our service!
             </div>
-            <div className=" text-[16px] font-[300]">This window can now be closed.</div>
+            <div className=" text-[14px] leading-[14px] font-light text-[#CECBCF]">
+              This window can now be closed.
+            </div>
           </div>
         )}
       </div>
-      <AmazonFooter />
+      <div className="">
+        <AmazonFooter />
+      </div>
     </div>
   )
 }

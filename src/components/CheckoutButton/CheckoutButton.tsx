@@ -37,7 +37,7 @@ export default function CheckoutButton() {
       className="rounded-lg w-full h-[32px] flex items-center justify-center border my-2 border-black text-[14px] leading-[19px]"
       onClick={handleCheckout}
     >
-      Checkout with Solana
+      Checkout with Sui
     </button>
   )
 }

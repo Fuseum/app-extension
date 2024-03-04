@@ -42,12 +42,12 @@ export const LocalStorage = (function () {
     const result = await chrome.storage.local.get(`${accountId}-${chainId}-key`)
     return result[`${accountId}-${chainId}-key`]
   }
-  async function _setSolanaAddress(solanaAddress: string) {
-    await chrome.storage.local.set({ solanaAddress: solanaAddress })
+  async function _setSuiAddress(suiAddress: string) {
+    await chrome.storage.local.set({ suiAddress: suiAddress })
   }
-  async function _getSolanaAddress() {
-    const result = await chrome.storage.local.get(['solanaAddress'])
-    return result.solanaAddress
+  async function _getsuiAddress() {
+    const result = await chrome.storage.local.get(['suiAddress'])
+    return result.suiAddress
   }
 
   return {
@@ -56,7 +56,7 @@ export const LocalStorage = (function () {
     getRefreshToken: _getRefreshToken,
     setRefreshToken: _setRefreshToken,
     clearToken: _clearToken,
-    setSolanaAddress: _setSolanaAddress,
-    getSolanaAddress: _getSolanaAddress,
+    setSuiAddress: _setSuiAddress,
+    getsuiAddress: _getsuiAddress,
   }
 })()

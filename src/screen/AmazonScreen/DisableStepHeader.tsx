@@ -6,8 +6,10 @@ export default function DisStepHeader({ done, step, title }: any) {
       <div className="relative flex flex-col items-center self-start">
         <div
           style={{ border: '1px solid rgba(124, 93, 248, 0.25)' }}
-          className={`size-[32px] flex items-center justify-center rounded text-[16px] font-[500] leading-7 text-[#7C5DF8] shrink-0  font-DmMono  ${
-            !done ? 'bg-[#140E24]' : 'bg-white'
+          className={`size-[32px] flex items-center justify-center rounded-full text-[14px] font-[500] leading-7  shrink-0  font-DmMono  ${
+            !done
+              ? 'bg-gradient-to-r from-[rgba(255,255,255,0.25)] to-[rgba(255,255,255,0.1)] text-white'
+              : 'bg-[#67B6FF] text-[#140E24]'
           }`}
         >
           {!done ? '0' + step : <img src={Check} alt="check icon" width={20} />}
@@ -18,7 +20,7 @@ export default function DisStepHeader({ done, step, title }: any) {
           </div>
         )}
       </div>
-      <div className="flex p-[12px_16px] rounded-xl bg-[#211A36] justify-between items-center self-stretch w-full ">
+      <div className="flex p-[12px_16px] rounded-xl bg-[#151D2ABF] bg-opacity-75 justify-between items-center self-stretch w-full ">
         <div className="text-[#C7BFDF] text-[14px] font-[700]">{title}</div>
         <img src={arrow} alt="" className=" size-[20px]" />
       </div>

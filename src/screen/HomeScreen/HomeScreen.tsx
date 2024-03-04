@@ -17,7 +17,7 @@ export default function HomeScreen() {
   }
 
   const retrieveAddress = async () => {
-    const addressStorage = await LocalStorage.getSolanaAddress()
+    const addressStorage = await LocalStorage.getsuiAddress()
     console.log('address get: ', addressStorage)
     if (addressStorage) {
       setAddress(addressStorage)

@@ -6,11 +6,8 @@ const backgroundEventBroadcast = new EventEmitter()
 
 /* Internal extension communication */
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log('request : ', request.solanaAddress)
-  console.log('Background script from Extension')
-  if (request.solanaAddress) {
-    console.log('Solana Address :', request.solanaAddress)
-    LocalStorage.setSolanaAddress(request.solanaAddress)
+  if (request.suiAddress) {
+    LocalStorage.setSuiAddress(request.suiAddress)
   }
   switch (request.action) {
     case 'openQR': {
@@ -76,7 +73,7 @@ chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse)=>{
   switch(request.action){
     case "login":{
       LocalStorage.setToken(request.token)
-      LocalStorage.setSolanaAddress(request.address)
+      LocalStorage.setSuiAddress(request.address)
       createPopupWindow(
         '/done',
         336,
